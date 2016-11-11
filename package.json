@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "description": "epam api service with node, express, mongo.",
   "main": "app.js",
+  "engines": {
+    "node": ">=6.0.0"
+  },
   "scripts": {
+    "start": "nodemon --watch app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
