@@ -1,0 +1,16 @@
+{
+  "name": "ExpressJS Demo",
+  "version": "1.0.0",
+  "scripts": {
+    "dev-server": "nodemon --watch ./Server startServer.js"
+  },
+  "description": "",
+  "author": "Yauheni Rutkouski",
+  "license": "ISC",
+  "devDependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "mongoose": "^4.6.7",
+    "nodemon": "^1.11.0"
+  }
+}
