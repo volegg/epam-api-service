@@ -1,5 +1,5 @@
 {
-  "name": "ExpressJS Demo",
+  "name": "ExpressJS-Demo",
   "version": "1.0.0",
   "scripts": {
     "dev-server": "nodemon --watch ./Server startServer.js"
