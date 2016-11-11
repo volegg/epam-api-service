@@ -200,3 +200,7 @@ tags
 # Linux trash folder which might appear on any partition or disk
 .Trash-*
 
+# Node modules
+node_modules/
+public/components/
+dist/
