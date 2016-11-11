@@ -24,11 +24,11 @@
   },
   "homepage": "https://github.com/volegg/epam-api-service#readme",
   "devDependencies": {
+    "body-parser": "^1.15.2",
     "cors": "^2.8.1",
     "eslint": "^3.9.1",
     "eslint-loader": "^1.6.1",
     "express": "^4.14.0",
-    "lodash": "^4.16.6",
     "mongoose": "^4.6.7",
     "morgan": "^1.7.0",
     "nodemon": "^1.11.0"
