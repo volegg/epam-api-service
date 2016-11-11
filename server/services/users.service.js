@@ -9,8 +9,5 @@ module.exports = {
   },
   getUserById: function(id) {
     return User.findOne({_id: id});
-  },
-  getUsersByName: function(name) {
-    return User.find({name: name});
   }
 };
