@@ -1,16 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>NodeJS Demo</title>
-  </head>
-  <body>
-      <form action="/user" method="post">
-
-          <button type="submit">post</button>
-      </form>
-      <form action="/user" method="get">
-
-          <button type="submit">get</button>
-      </form>
-  </body>
+    <head>
+        <title>NodeJS Demo</title>
+    </head>
+    <body>
+        <button type="button" onclick="postUser()">post</button>
+        <button type="button" onclick="getUser()">get</button>
+        <button type="button" onclick="deleteUser()">delete</button>
+        <button type="button" onclick="putUser()">put</button>
+        <script>
+            'use strict';
+            function putUser() {
+                let xhr = new XMLHttpRequest();
+                xhr.open('PUT', '/user', false);
+                xhr.send();
+                console.log(xhr.status);
+            }
+            function postUser() {
+                let xhr = new XMLHttpRequest();
+                xhr.open('POST', '/user', false);
+                xhr.send();
+                console.log(xhr.status);
+            }
+            function getUser() {
+                let xhr = new XMLHttpRequest();
+                xhr.open('GET', '/user', false);
+                xhr.send();
+                console.log(xhr.status);
+            }
+            function deleteUser() {
+                let xhr = new XMLHttpRequest();
+                xhr.open('DELETE', '/user', false);
+                xhr.send();
+                console.log(xhr.status);
+            }
+        </script>
+    </body>
 </html>

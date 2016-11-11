@@ -2,7 +2,7 @@
 const User = require('../models/User.js');
 const Passport = require('../models/Passport.js');
 
-module.exports = function addUser(req, res) {
-    console.log('post');
+module.exports = function changePassport(req, res) {
+    console.log('put');
     res.sendStatus(200);
 };
