@@ -4,5 +4,5 @@ const Passport = require('../models/Passport.js');
 
 module.exports = function deleteUser(req, res) {
     console.log('delete');
-    res.sendStatus(200);
+    res.send('success delete');
 };

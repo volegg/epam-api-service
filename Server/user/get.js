@@ -4,10 +4,10 @@ const Passport = require('../models/Passport.js');
 
 module.exports = function getUser(req, res) {
     console.log('get');
-    let user = {
-        name: 'Alan',
-        surname: 'Wake',
-        query: req.query.id
-    }
-    res.send(user);
+    let responseData = User.find({}, (error, user) => {
+        if (error) {
+            res.sendStatus(400);
+        }
+        res.send(user)
+    });
 };

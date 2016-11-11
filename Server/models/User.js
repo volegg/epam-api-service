@@ -22,12 +22,12 @@ const User = new mongoose.Schema({
     country: {
         type: String,
         required: true
-    },
-    passportId: {
-        type: mongoose.Schema.ObjectId,
-        required: true,
-        ref: 'Passport'
     }
+    // passportId: {
+    //     type: mongoose.Schema.ObjectId,
+    //     required: true,
+    //     ref: 'Passport'
+    // }
 });
 
 module.exports = mongoose.model('User', User);

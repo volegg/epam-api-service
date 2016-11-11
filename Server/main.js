@@ -9,6 +9,6 @@ const app = express();
 mongoose.connect('mongodb://localhost/expressdemo');
 
 app.use(express.static('./'));
-app.listen(8080, console.log('listen 8080'));
+app.listen(3000, console.log('listen 3000'));
 app.use(bodyParser.json());
 app.use(router);

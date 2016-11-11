@@ -4,5 +4,5 @@ const Passport = require('../models/Passport.js');
 
 module.exports = function changeUser(req, res) {
     console.log('put');
-    res.sendStatus(200);
+    res.send('success put');
 };

@@ -4,6 +4,8 @@
         <title>NodeJS Demo</title>
     </head>
     <body>
+        <h4>Response</h4>
+        <p id="res"></p>
         <button type="button" onclick="postUser()">post</button>
         <button type="button" onclick="getUser()">get</button>
         <button type="button" onclick="deleteUser()">delete</button>
@@ -14,25 +16,25 @@
                 let xhr = new XMLHttpRequest();
                 xhr.open('PUT', '/user', false);
                 xhr.send();
-                console.log(xhr.status);
+                document.getElementById('res').innerText = xhr.responseText;
             }
             function postUser() {
                 let xhr = new XMLHttpRequest();
                 xhr.open('POST', '/user', false);
                 xhr.send();
-                console.log(xhr.status);
+                document.getElementById('res').innerText = xhr.responseText;
             }
             function getUser() {
                 let xhr = new XMLHttpRequest();
                 xhr.open('GET', '/user', false);
                 xhr.send();
-                console.log(xhr.status);
+                document.getElementById('res').innerText = xhr.responseText;
             }
             function deleteUser() {
                 let xhr = new XMLHttpRequest();
                 xhr.open('DELETE', '/user', false);
                 xhr.send();
-                console.log(xhr.status);
+                document.getElementById('res').innerText = xhr.responseText;
             }
         </script>
     </body>
