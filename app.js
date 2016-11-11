@@ -3,9 +3,12 @@ const app = express();
 const morgan = require('morgan');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const { PORT, PREFIX } = require('./server/config');
-const { api, users } = require('./server/routes');
+const mongoose = require('mongoose');
+const { PORT, PREFIX, DATABASE } = require('./server/config');
+const { api, users, passports } = require('./server/routes');
 
+mongoose.Promise = global.Promise;
+mongoose.connect(DATABASE);
 
 app.use(morgan('dev'))
   .use(cors())
@@ -13,6 +16,7 @@ app.use(morgan('dev'))
   .use(bodyParser.json())
   .use(`/${PREFIX}/`, api)
   .use(`/${PREFIX}/users`, users)
+  .use(`/${PREFIX}/passports`, passports)
   .use((err, req, res, next) => {
     res.status(200).json({
       errors: err
