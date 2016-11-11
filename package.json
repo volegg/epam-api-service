@@ -1,0 +1,22 @@
+{
+  "name": "epam-api-service",
+  "version": "1.0.0",
+  "description": "epam api service with node, express, mongo.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/volegg/epam-api-service.git"
+  },
+  "keywords": [
+    "rest"
+  ],
+  "author": "uladzislau kavaliou",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/volegg/epam-api-service/issues"
+  },
+  "homepage": "https://github.com/volegg/epam-api-service#readme"
+}
