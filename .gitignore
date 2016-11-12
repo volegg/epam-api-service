@@ -204,3 +204,4 @@ tags
 node_modules/
 public/components/
 dist/
+.idea/
