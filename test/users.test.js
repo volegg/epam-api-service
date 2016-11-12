@@ -57,7 +57,14 @@ describe('USER API', () => {
         .post(`/${PREFIX}/users`)
         .send(user)
         .end((err, res) => {
+          res.should.have.status(200);
           res.body.should.be.a('object');
+          res.body.should.have.property('id');
+          res.body.should.have.property('name');
+          res.body.should.have.property('surname');
+          res.body.should.have.property('sex');
+          res.body.should.have.property('birthday');
+          res.body.should.have.property('country');
           done();
         });
     });

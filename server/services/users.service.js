@@ -1,4 +1,4 @@
-const User = require('../models/user.model');
+const { User } = require('../models');
 
 module.exports = {
   insertUser: function(user) {
@@ -9,5 +9,11 @@ module.exports = {
   },
   getUserById: function(id) {
     return User.findOne({_id: id});
+  },
+  updateUser: function (id) {
+    return User.findById(id);
+  },
+  deleteUser: function(user) {
+    return User.findOneAndRemove({_id: user.id});
   }
 };

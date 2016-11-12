@@ -6,7 +6,7 @@ const app = require('../app');
 const should = chai.should();
 const { PREFIX } = require('../server/config');
 
-const User = require('../server/models/user.model');
+const { User } = require('../server/models');
 
 chai.use(chaiHttp);
 

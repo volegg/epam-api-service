@@ -6,7 +6,7 @@ const userSchema = mongoose.Schema({
     required: true,
     validate: {
       validator: nameValidator,
-      message: '{VALUE} is not a valid. The length must be 30.'
+      message: '{VALUE} is not a valid. The length must be less then 30.'
     }
   },
   surname: {
@@ -14,7 +14,7 @@ const userSchema = mongoose.Schema({
     required: true,
     validate: {
       validator: surnameValidator,
-      message: '{VALUE} is not a valid. The length must be 60.'
+      message: '{VALUE} is not a valid. The length must be less then 60.'
     }
   },
   birthday: {
@@ -38,6 +38,7 @@ const userSchema = mongoose.Schema({
   },
   passportId: {
     type: mongoose.Schema.ObjectId,
+    ref: 'passport',
     required: true
   }
 });
