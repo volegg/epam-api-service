@@ -25,7 +25,10 @@ app.use(cors())
   .use(`/${PREFIX}/passports`, passports)
   .use((err, req, res, next) => {
     res.status(200).json({
-      errors: err
+      errors: {
+        name: err.name,
+        message: err.message
+      }
     });
   });
 

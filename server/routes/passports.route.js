@@ -52,7 +52,6 @@ router.get('/:surname', (req, res, next) => {
             res.status(200).json(passportResult);
           })
           .catch((err) => {
-            console.log('err');
             next(err);
           });
       })

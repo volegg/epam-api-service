@@ -4,6 +4,7 @@ const { passportService, userService } = require('../services');
 const moment = require('moment');
 const { DATE_FORMAT } = require('../config');
 const sex = require('../models/types/sex.type.js');
+const countries = require('../constants/countries');
 
 router.post('/', (req, res, next) => {
   passportService.insertPassport({
@@ -14,6 +15,10 @@ router.post('/', (req, res, next) => {
       authority: req.body.authority
     })
     .then((passport) => {
+      if (countries.indexOf(req.body.country) === -1) {
+        next(new Error(`The countries ${req.body.country} doesn't exists.`));
+      };
+      
       userService.insertUser({
         name: req.body.name,
         surname: req.body.surname,
@@ -41,6 +46,7 @@ router.post('/', (req, res, next) => {
         });
     })
     .catch((err) => {
+      console.log('asd1', err);
       next(err);
     });
 });

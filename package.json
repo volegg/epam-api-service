@@ -7,7 +7,7 @@
     "node": ">=6.0.0"
   },
   "scripts": {
-    "start": "nodemon --watch */*",
+    "start": "nodemon --watch ./app.jsА",
     "test": "mocha test"
   },
   "repository": {
