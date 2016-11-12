@@ -4,9 +4,11 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const app = require('../app');
 const should = chai.should();
+const moment = require('moment');
 const { PREFIX } = require('../server/config');
 const { User, Passport } = require('../server/models');
 const { usersMock } = require('./mocks');
+const { DATE_FORMAT } = require('../server/config');
 
 chai.use(chaiHttp);
 
@@ -25,7 +27,7 @@ describe('USER API', () => {
       .catch((err) => {
         console.log(err);
       });
-    
+
   });
 
   afterEach((done) => {
@@ -92,7 +94,8 @@ describe('USER API', () => {
   describe('PUT /users', () => {
     it('it should update user', (done) => {
       const user = Object.assign({}, usersMock[0]);
-  
+      const birthday = moment(user.birthday, DATE_FORMAT, true).unix();
+
       chai.request(app)
         .post(`/${PREFIX}/users`)
         .send(user)
@@ -101,7 +104,7 @@ describe('USER API', () => {
           res.body.name.should.equal('vlad');
           res.body.surname.should.equal('kovaliov');
           res.body.birthday.should.be.a('number');
-          res.body.birthday.should.equal(726210000);
+          res.body.birthday.should.equal(birthday);
           res.body.sex.should.be.a('number');
           res.body.sex.should.equal(2);
 
@@ -117,7 +120,7 @@ describe('USER API', () => {
               response.body.name.should.equal('ivan');
               response.body.surname.should.equal('kovaliov');
               response.body.birthday.should.be.a('number');
-              response.body.birthday.should.equal(726210000);
+              response.body.birthday.should.equal(birthday);
               response.body.sex.should.be.a('number');
               response.body.sex.should.equal(2);
 
@@ -130,6 +133,7 @@ describe('USER API', () => {
   describe('DELETE /user', () => {
     it('it should delete user', (done) => {
       const user = Object.assign({}, usersMock[0]);
+      const birthday = moment(user.birthday, DATE_FORMAT, true).unix();
 
       chai.request(app)
         .post(`/${PREFIX}/users`)
@@ -139,7 +143,7 @@ describe('USER API', () => {
           res.body.name.should.equal('vlad');
           res.body.surname.should.equal('kovaliov');
           res.body.birthday.should.be.a('number');
-          res.body.birthday.should.equal(726210000);
+          res.body.birthday.should.equal(birthday);
           res.body.sex.should.be.a('number');
           res.body.sex.should.equal(2);
 
@@ -158,4 +162,3 @@ describe('USER API', () => {
     });
   });
 });
-

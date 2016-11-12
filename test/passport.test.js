@@ -4,8 +4,10 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const app = require('../app');
 const should = chai.should();
+const moment = require('moment');
 const { PREFIX } = require('../server/config');
 const { Passport } = require('../server/models');
+const { DATE_FORMAT } = require('../server/config');
 const { passportsMock } = require('./mocks');
 
 chai.use(chaiHttp);
@@ -78,6 +80,8 @@ describe('PASSPORT API', () => {
   describe('PUT /passports', () => {
     it('it should update user', (done) => {
       const passport = Object.assign({}, passportsMock[0]);
+      const issueDate = moment(passport.issueDate, DATE_FORMAT, true).unix();
+      const expiryDate = moment(passport.expiryDate, DATE_FORMAT, true).unix();
 
       chai.request(app)
         .post(`/${PREFIX}/passports`)
@@ -85,9 +89,9 @@ describe('PASSPORT API', () => {
         .end((err, res) => {
           res.should.have.status(200);
           res.body.issueDate.should.be.a('number');
-          res.body.issueDate.should.equal(1155355200);
+          res.body.issueDate.should.equal(issueDate);
           res.body.expiryDate.should.be.a('number');
-          res.body.expiryDate.should.equal(1544850000);
+          res.body.expiryDate.should.equal(expiryDate);
           res.body.passportNumber.should.equal('AB1111111');
           res.body.identificationNumber.should.equal('1111111AB');
           res.body.authority.should.be.a('string');
@@ -101,9 +105,9 @@ describe('PASSPORT API', () => {
             .end((err, response) => {
               response.should.have.status(200);
               response.body.issueDate.should.be.a('number');
-              response.body.issueDate.should.equal(1155355200);
+              response.body.issueDate.should.equal(issueDate);
               response.body.expiryDate.should.be.a('number');
-              response.body.expiryDate.should.equal(1544850000);
+              response.body.expiryDate.should.equal(expiryDate);
               response.body.passportNumber.should.equal('AB1111112');
               response.body.identificationNumber.should.equal('1111111AB');
               response.body.authority.should.be.a('string');
@@ -118,6 +122,8 @@ describe('PASSPORT API', () => {
   describe('DELETE /passport', () => {
     it('it should delete passport', (done) => {
       const passport = Object.assign({}, passportsMock[0]);
+      const issueDate = moment(passport.issueDate, DATE_FORMAT, true).unix();
+      const expiryDate = moment(passport.expiryDate, DATE_FORMAT, true).unix();
 
       chai.request(app)
         .post(`/${PREFIX}/passports`)
@@ -125,9 +131,9 @@ describe('PASSPORT API', () => {
         .end((err, res) => {
           res.should.have.status(200);
           res.body.issueDate.should.be.a('number');
-          res.body.issueDate.should.equal(1155355200);
+          res.body.issueDate.should.equal(issueDate);
           res.body.expiryDate.should.be.a('number');
-          res.body.expiryDate.should.equal(1544850000);
+          res.body.expiryDate.should.equal(expiryDate);
           res.body.passportNumber.should.equal('AB1111111');
           res.body.identificationNumber.should.equal('1111111AB');
           res.body.authority.should.be.a('string');
@@ -147,4 +153,3 @@ describe('PASSPORT API', () => {
     });
   });
 });
-
