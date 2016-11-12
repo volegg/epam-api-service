@@ -4,12 +4,14 @@ module.exports = {
   insertPassport: function(passport) {
     return Passport.create(passport);
   },
+  getPassportByidentificationNumber: function(identificationNumber) {
+    return Passport.findOne({identificationNumber: identificationNumber});
+  },
   getPassports: function() {
     return Passport.find({});
   },
   getPassportBySurname: function(surname) {
     return User.findOne({surname: surname});
-    // return Passport.findOne({_id: id});
   },
   updatePassport: function (id) {
     return Passport.findById(id);

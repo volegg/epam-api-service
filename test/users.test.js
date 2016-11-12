@@ -78,69 +78,76 @@ describe('USER API', () => {
 
   describe('PUT /users', () => {
     it('it should update user', (done) => {
-      const user = Object.assign({}, usersMock[0]);
-
-      chai.request(app)
-        .post(`/${PREFIX}/users`)
-        .send(user)
-        .end((err, res) => {
-          res.should.have.status(200);
-          res.body.name.should.equal('vlad');
-          res.body.surname.should.equal('kovaliov');
-          res.body.birthday.should.be.a('number');
-          res.body.birthday.should.equal(726210000);
-          res.body.sex.should.be.a('number');
-          res.body.sex.should.equal(2);
-
-          user.id = res.body.id;
-          user.name = 'ivan';
-
+      Passport.remove({})
+        .then(() => {
+          const user = Object.assign({}, usersMock[0]);
+      
           chai.request(app)
-            .put(`/${PREFIX}/users`)
+            .post(`/${PREFIX}/users`)
             .send(user)
-            .end((err, response) => {
-              response.should.have.status(200);
-              response.body.id.should.equal(res.body.id);
-              response.body.name.should.equal('ivan');
-              response.body.surname.should.equal('kovaliov');
-              response.body.birthday.should.be.a('number');
-              response.body.birthday.should.equal(726210000);
-              response.body.sex.should.be.a('number');
-              response.body.sex.should.equal(2);
+            .end((err, res) => {
+              res.should.have.status(200);
+              res.body.name.should.equal('vlad');
+              res.body.surname.should.equal('kovaliov');
+              res.body.birthday.should.be.a('number');
+              res.body.birthday.should.equal(726210000);
+              res.body.sex.should.be.a('number');
+              res.body.sex.should.equal(2);
 
-              done();
+              user.id = res.body.id;
+              user.name = 'ivan';
+
+              chai.request(app)
+                .put(`/${PREFIX}/users`)
+                .send(user)
+                .end((err, response) => {
+                  response.should.have.status(200);
+                  response.body.id.should.equal(res.body.id);
+                  response.body.name.should.equal('ivan');
+                  response.body.surname.should.equal('kovaliov');
+                  response.body.birthday.should.be.a('number');
+                  response.body.birthday.should.equal(726210000);
+                  response.body.sex.should.be.a('number');
+                  response.body.sex.should.equal(2);
+
+                  done();
+                });
             });
         });
+      
 
     });
   });
 
   describe('DELETE /user', () => {
     it('it should delete user', (done) => {
-      const user = Object.assign({}, usersMock[0]);
-
-      chai.request(app)
-        .post(`/${PREFIX}/users`)
-        .send(user)
-        .end((err, res) => {
-          res.should.have.status(200);
-          res.body.name.should.equal('vlad');
-          res.body.surname.should.equal('kovaliov');
-          res.body.birthday.should.be.a('number');
-          res.body.birthday.should.equal(726210000);
-          res.body.sex.should.be.a('number');
-          res.body.sex.should.equal(2);
-
-          user.id = res.body.id;
+       Passport.remove({})
+        .then(() => {
+          const user = Object.assign({}, usersMock[0]);
 
           chai.request(app)
-            .delete(`/${PREFIX}/users`)
+            .post(`/${PREFIX}/users`)
             .send(user)
-            .end((err, response) => {
-              response.should.have.status(200);
-              response.body.should.have.property('message');
+            .end((err, res) => {
+              res.should.have.status(200);
+              res.body.name.should.equal('vlad');
+              res.body.surname.should.equal('kovaliov');
+              res.body.birthday.should.be.a('number');
+              res.body.birthday.should.equal(726210000);
+              res.body.sex.should.be.a('number');
+              res.body.sex.should.equal(2);
 
-              done();
+              user.id = res.body.id;
+
+              chai.request(app)
+                .delete(`/${PREFIX}/users`)
+                .send(user)
+                .end((err, response) => {
+                  response.should.have.status(200);
+                  response.body.should.have.property('message');
+
+                  done();
+                });
             });
         });
     });

@@ -7,46 +7,58 @@ const sex = require('../models/types/sex.type.js');
 const countries = require('../constants/countries');
 
 router.post('/', (req, res, next) => {
-  passportService.insertPassport({
-      passportNumber: req.body.passportNumber,
-      identificationNumber: req.body.identificationNumber,
-      issueDate: moment(req.body.issueDate, DATE_FORMAT, true).unix(),
-      expiryDate: moment(req.body.expiryDate, DATE_FORMAT, true).unix(),
-      authority: req.body.authority
-    })
+  const identificationNumber = req.body.identificationNumber;
+
+  passportService.getPassportByidentificationNumber(identificationNumber)
     .then((passport) => {
-      if (countries.indexOf(req.body.country) === -1) {
-        next(new Error(`The countries ${req.body.country} doesn't exists.`));
-      };
-      
-      userService.insertUser({
-        name: req.body.name,
-        surname: req.body.surname,
-        birthday: moment(req.body.birthday, DATE_FORMAT, true).unix(),
-        sex: sex[req.body.sex],
-        photo: req.body.photo,
-        country: req.body.country,
-        passportId: passport._id
-      })
-        .then((user) => {
-          const userResult = {
-            id: user._id,
-            name: user.name,
-            surname: user.surname,
-            birthday: user.birthday,
-            sex: user.sex,
-            phone: user.photo,
-            country: user.country
+      if (!passport) {
+        passportService.insertPassport({
+          passportNumber: req.body.passportNumber,
+          identificationNumber: req.body.identificationNumber,
+          issueDate: moment(req.body.issueDate, DATE_FORMAT, true).unix(),
+          expiryDate: moment(req.body.expiryDate, DATE_FORMAT, true).unix(),
+          authority: req.body.authority
+        })
+        .then((passport) => {
+          if (countries.indexOf(req.body.country) === -1) {
+            next(new Error(`The countries ${req.body.country} doesn't exists.`));
           };
 
-          res.status(200).json(userResult);
+          userService.insertUser({
+            name: req.body.name,
+            surname: req.body.surname,
+            birthday: moment(req.body.birthday, DATE_FORMAT, true).unix(),
+            sex: sex[req.body.sex],
+            photo: req.body.photo,
+            country: req.body.country,
+            passportId: passport._id
+          })
+            .then((user) => {
+              const userResult = {
+                id: user._id,
+                name: user.name,
+                surname: user.surname,
+                birthday: user.birthday,
+                sex: user.sex,
+                phone: user.photo,
+                country: user.country
+              };
+
+              res.status(200).json(userResult);
+            })
+            .catch((err) => {
+              next(err);
+            });
         })
         .catch((err) => {
+          console.log('asd1', err);
           next(err);
         });
+      } else {
+        next(new Error('The user with this identification number already exist.'));
+      }
     })
     .catch((err) => {
-      console.log('asd1', err);
       next(err);
     });
 });
