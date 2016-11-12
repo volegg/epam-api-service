@@ -7,8 +7,8 @@
     "node": ">=6.0.0"
   },
   "scripts": {
-    "start": "nodemon --watch */*",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon --watch ./app.jsА",
+    "test": "mocha test"
   },
   "repository": {
     "type": "git",
@@ -25,10 +25,13 @@
   "homepage": "https://github.com/volegg/epam-api-service#readme",
   "devDependencies": {
     "body-parser": "^1.15.2",
+    "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
+    "config": "^1.24.0",
     "cors": "^2.8.1",
     "eslint": "^3.9.1",
-    "eslint-loader": "^1.6.1",
     "express": "^4.14.0",
+    "mocha": "^3.1.2",
     "moment": "^2.16.0",
     "mongoose": "^4.6.7",
     "morgan": "^1.7.0",

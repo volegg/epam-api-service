@@ -1,24 +1,20 @@
 const mongoose = require('mongoose');
-
+const { nameValidator, surnameValidator, countryValidator } = require('../shared/validators/user.validator');
 const userSchema = mongoose.Schema({
   name: {
     type: String,
     required: true,
     validate: {
-      validator: function(value) {
-        return value.length < 30;
-      },
-      message: '{VALUE} is not a valid. The length must be 30.'
+      validator: nameValidator,
+      message: '{VALUE} is not a valid. The length must be less then 30.'
     }
   },
   surname: {
     type: String,
     required: true,
     validate: {
-      validator: function(value) {
-        return value.length < 60;
-      },
-      message: '{VALUE} is not a valid. The length must be 60.'
+      validator: surnameValidator,
+      message: '{VALUE} is not a valid. The length must be less then 60.'
     }
   },
   birthday: {
@@ -36,14 +32,13 @@ const userSchema = mongoose.Schema({
     type: String,
     required: true,
     validate: {
-      validator: function(value) {
-        return /^[A-Z]{3}$/.test(value);
-      },
+      validator: countryValidator,
       message: '{VALUE} is not a valid. The country must be format alpha 3.'
     }
   },
   passportId: {
     type: mongoose.Schema.ObjectId,
+    ref: 'passport',
     required: true
   }
 });
