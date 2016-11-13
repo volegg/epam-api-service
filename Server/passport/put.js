@@ -1,8 +1,12 @@
 'use strict';
-const User = require('../models/User.js');
 const Passport = require('../models/Passport.js');
 
-module.exports = function changePassport(req, res) {
-    console.log('put');
-    res.sendStatus(200);
+module.exports = function changePassport(req, res, next) {
+    Passport.findByIdAndUpdate(user.params.id, {$set: req.body}, {runValidators: true})
+        .then((passport) => {
+            res.send(passport);
+        })
+        .catch(err => {
+            next(err)
+        });
 };

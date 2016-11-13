@@ -2,22 +2,40 @@
 const User = require('../models/User.js');
 const Passport = require('../models/Passport.js');
 
-module.exports = function addUser(req, res) {
-    console.log('post');
+module.exports = function addUser(req, res, next) {
+    const passport = new Passport({
+        passportNumber: req.body.passportNumber,
+        identificationNumber: req.body.identificationNumber,
+        issueDate: req.body.issueDate,
+        expiryDate: req.body.expiryDate,
+        authority: req.body.authority
+    });
     const user = new User({
-        name: 'John',
-        surname: 'Snow',
-        birthday: new Date(),
-        sex: 'male',
-        photo: 'NA',
-        country: 'RUS'
+        name: req.body.name,
+        surname: req.body.surname,
+        birthday: req.body.birthday,
+        sex: req.body.sex,
+        photo: req.body.photo,
+        country: req.body.country,
+        passportId: passport._id
     });
-    console.log(user);
-    user.save((error) => {
-        if (error) {
-            res.sendStatus(400);
-        } else {
-            res.sendStatus(200);
-        }
-    });
+    user.save()
+        .then(() => {
+            let userResponse = {
+                id: user._id,
+                name: user.name,
+                surname: user.surname,
+                birthday: user.birthday,
+                sex: user.sex,
+                photo: user.photo,
+                country: user.country,
+                passportId: passport._id,
+                passportNumber: passport.passportNumber,
+                identificationNumber: passport.identificationNumber,
+            }
+            res.send(userResponse);
+        })
+        .catch(err => {
+            next(err);
+        });
 };

@@ -2,8 +2,8 @@
 const User = require('../models/User.js');
 const Passport = require('../models/Passport.js');
 
-module.exports = function getUser(req, res, next) {
-    User.find({})
+module.exports = function getUserById(req, res, next) {
+    User.findById(req.params.id)
         .then(user => {
             res.send(user);
         })

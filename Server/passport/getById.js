@@ -1,8 +1,8 @@
 'use strict';
 const Passport = require('../models/Passport.js');
 
-module.exports = function getPassports(req, res, next) {
-    Passport.find({})
+module.exports = function getPassportById(req, res, next) {
+    Passport.findById(req.params.id)
         .then(passport => {
             res.send(passport);
         })
