@@ -3,12 +3,24 @@ const mongoose = require('mongoose');
 
 const Passport = new mongoose.Schema({
     passportNumber: {
-        type: String, //length 10, 2 upper case letters, 8 digits | AB12345678
-        required: true
+        type: String,
+        required: true,
+        validate: {
+            validator: function(v) {
+                return /^[A-Z]{2}[0-9]{8}$/.test(v);
+            },
+            message: '{VALUE} is not a valid passport number!'
+        }
     },
     identificationNumber: {
-        type: String, //length 9, sex number (2 - female, 3 - male), short birthday date, PB/GB/BI | 2020286GB
-        required: true
+        type: String,
+        required: true,
+        validate: {
+            validator: function(v) {
+                return /^[2-3][0-9]{6}(PB|GB|BI)$/.test(v);
+            },
+            message: '{VALUE} is not a valid identification number!'
+        }
     },
     issueDate: {
         type: Date,
@@ -20,6 +32,7 @@ const Passport = new mongoose.Schema({
     },
     authority: {
         type: String,
+        maxlength: 100,
         required: true
     }
 });

@@ -21,19 +21,26 @@ module.exports = function addUser(req, res, next) {
     });
     user.save()
         .then(() => {
-            let userResponse = {
-                id: user._id,
-                name: user.name,
-                surname: user.surname,
-                birthday: user.birthday,
-                sex: user.sex,
-                photo: user.photo,
-                country: user.country,
-                passportId: passport._id,
-                passportNumber: passport.passportNumber,
-                identificationNumber: passport.identificationNumber,
-            }
-            res.send(userResponse);
+            passport.save()
+                .then(() => {
+                    let userResponse = {
+                        id: user._id,
+                        name: user.name,
+                        surname: user.surname,
+                        birthday: user.birthday,
+                        sex: user.sex,
+                        photo: user.photo,
+                        country: user.country,
+                        passportId: passport._id,
+                        passportNumber: passport.passportNumber,
+                        identificationNumber: passport.identificationNumber,
+                    }
+                    res.send(userResponse);
+                })
+                .catch(err => {
+                    console.log(err);
+                    next(err);
+                });
         })
         .catch(err => {
             next(err);
