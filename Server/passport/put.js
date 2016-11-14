@@ -2,11 +2,7 @@
 const Passport = require('../models/Passport.js');
 
 module.exports = function changePassport(req, res) {
-    Passport.findByIdAndUpdate(user.params.id, {
-            $set: req.body
-        }, {
-            runValidators: true
-        })
+    Passport.findByIdAndUpdate(req.params.id, {$set: req.body}, {runValidators: true})
         .then(passport => {
             res.send(passport);
         })
