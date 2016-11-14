@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { nameValidator, surnameValidator, countryValidator } = require('../shared/validators/user.validator');
+
 const userSchema = mongoose.Schema({
   name: {
     type: String,
@@ -36,10 +37,10 @@ const userSchema = mongoose.Schema({
       message: '{VALUE} is not a valid. The country must be format alpha 3.'
     }
   },
-  passportId: {
+  _passport: {
     type: mongoose.Schema.ObjectId,
-    ref: 'passport',
-    required: true
+    required: true,
+    ref: 'passport'
   }
 });
 

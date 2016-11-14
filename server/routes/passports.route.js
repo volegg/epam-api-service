@@ -33,30 +33,24 @@ router.post('/', (req, res, next) => {
 router.get('/:surname', (req, res, next) => {
   if (req.params.surname) {
     passportService.getPassportBySurname(req.params.surname)
-      .then((user) => {
+      .populate('_passport')
+      .exec((err, user) => {
+        if (err) { next(err); }
+
         if (!user) {
-          res.status(200).json({});
+          next(new Error(`The passport data with surname \'user.surname\' not exist.`));
+        } else {
+          const passport = {
+            id: user._passport._id,
+            passportNumber: user._passport.passportNumber,
+            identificationNumber: user._passport.identificationNumber,
+            issueDate: user._passport.issueDate,
+            expiryDate: user._passport.expiryDate,
+            authority: user._passport.authority
+          }
+
+          res.status(200).json(passport);
         }
-
-        Passport.findOne({_id: user.passportId})
-          .then((passport) => {
-            const passportResult = {
-              id: passport._id,
-              passportNumber: passport.passportNumber,
-              identificationNumber: passport.identificationNumber,
-              issueDate: passport.issueDate,
-              expiryDate: passport.expiryDate,
-              authority: passport.authority
-            };
-
-            res.status(200).json(passportResult);
-          })
-          .catch((err) => {
-            next(err);
-          });
-      })
-      .catch((err) => {
-        next(err);
       });
   }
 });

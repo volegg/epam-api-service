@@ -31,7 +31,7 @@ router.post('/', (req, res, next) => {
             sex: sex[req.body.sex],
             photo: req.body.photo,
             country: req.body.country,
-            passportId: passport._id
+            _passport: passport._id
           })
             .then((user) => {
               const userResult = {
