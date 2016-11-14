@@ -9,7 +9,7 @@ module.exports = [
     photo: '',
     sex: 'male',
     passportNumber: 'AB1111111',
-    identificationNumber: '1111111AB',
+    identificationNumber: '2020286GB',
     authority: 'some test'
   },
   {
@@ -22,7 +22,7 @@ module.exports = [
     photo: '',
     sex: 'male',
     passportNumber: 'AB5215252',
-    identificationNumber: '5252152AB',
+    identificationNumber: '2020286GB',
     authority: 'some test'
   },
   {
@@ -35,7 +35,7 @@ module.exports = [
     photo: '',
     sex: 'female',
     passportNumber: 'AB9295292',
-    identificationNumber: '9292192AB',
+    identificationNumber: '2020286BI',
     authority: 'some test'
   },
   {
@@ -48,7 +48,7 @@ module.exports = [
     photo: '',
     sex: 'female',
     passportNumber: 'AB9395232',
-    identificationNumber: '329213AB',
+    identificationNumber: '2020286GB',
     authority: 'some test'
   }
 ];

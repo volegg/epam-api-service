@@ -93,7 +93,7 @@ describe('PASSPORT API', () => {
           res.body.expiryDate.should.be.a('number');
           res.body.expiryDate.should.equal(expiryDate);
           res.body.passportNumber.should.equal('AB1111111');
-          res.body.identificationNumber.should.equal('1111111AB');
+          res.body.identificationNumber.should.equal('2020286BI');
           res.body.authority.should.be.a('string');
 
           passport.id = res.body.id;
@@ -109,7 +109,7 @@ describe('PASSPORT API', () => {
               response.body.expiryDate.should.be.a('number');
               response.body.expiryDate.should.equal(expiryDate);
               response.body.passportNumber.should.equal('AB1111112');
-              response.body.identificationNumber.should.equal('1111111AB');
+              response.body.identificationNumber.should.equal('2020286BI');
               response.body.authority.should.be.a('string');
 
               done();
@@ -135,7 +135,7 @@ describe('PASSPORT API', () => {
           res.body.expiryDate.should.be.a('number');
           res.body.expiryDate.should.equal(expiryDate);
           res.body.passportNumber.should.equal('AB1111111');
-          res.body.identificationNumber.should.equal('1111111AB');
+          res.body.identificationNumber.should.equal('2020286BI');
           res.body.authority.should.be.a('string');
 
           passport.id = res.body.id;

@@ -51,7 +51,6 @@ router.post('/', (req, res, next) => {
             });
         })
         .catch((err) => {
-          console.log('asd1', err);
           next(err);
         });
       } else {
