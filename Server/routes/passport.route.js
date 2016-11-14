@@ -6,13 +6,12 @@ const changePassport = require('../passport/put.js');
 const deleteUser = require('../user/delete.js');
 
 router.use((req, res, next) => {
-    console.log('passport route');
     next();
 });
 
 router.get('/', getPassports);
 router.get('/:id', getPassportById);
 router.put('/:id', changePassport);
-router.delete('/:id', deleteUser);//??????
+router.delete('/:id', deleteUser); //??????
 
 module.exports = router;

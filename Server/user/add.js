@@ -38,7 +38,6 @@ module.exports = function addUser(req, res, next) {
                     res.send(userResponse);
                 })
                 .catch(err => {
-                    console.log(err);
                     next(err);
                 });
         })

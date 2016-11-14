@@ -7,7 +7,6 @@ const changeUser = require('../user/put.js');
 const deleteUser = require('../user/delete.js');
 
 router.use((req, res, next) => {
-    console.log('user route');
     next();
 });
 
