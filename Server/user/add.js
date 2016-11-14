@@ -2,7 +2,7 @@
 const User = require('../models/User.js');
 const Passport = require('../models/Passport.js');
 
-module.exports = function addUser(req, res, next) {
+module.exports = function addUser(req, res) {
     const passport = new Passport({
         passportNumber: req.body.passportNumber,
         identificationNumber: req.body.identificationNumber,
@@ -38,10 +38,10 @@ module.exports = function addUser(req, res, next) {
                     res.send(userResponse);
                 })
                 .catch(err => {
-                    next(err);
+                    res.status(500).send(err);
                 });
         })
         .catch(err => {
-            next(err);
+            res.status(500).send(err);
         });
 };

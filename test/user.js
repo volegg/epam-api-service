@@ -2,54 +2,11 @@
 const mongoose = require('mongoose');
 const User = require('../Server/models/User.js');
 const Passport = require('../Server/models/Passport.js');
-
-//Require the dev-dependencies
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../Server/main.js');
 const should = chai.should();
-
-const userData1 = {
-    name: 'John',
-    surname: 'Doe',
-    birthday: '11/10/1989',
-    issueDate: '01/02/2011',
-    expiryDate: '11/10/2019',
-    country: 'RUS',
-    photo: '',
-    sex: 'male',
-    passportNumber: 'AB12345678',
-    identificationNumber: '2123456PB',
-    authority: 'qwerty'
-};
-
-const userData2 = {
-    name: 'Jonny',
-    surname: 'Doeee',
-    birthday: '11/10/1989',
-    issueDate: '01/02/2001',
-    expiryDate: '11/10/2009',
-    country: 'BLR',
-    photo: '',
-    sex: 'female',
-    passportNumber: 'AB12345678',
-    identificationNumber: '3123456GB',
-    authority: 'ytrewq'
-};
-
-const userData3 = {
-    name: 'Nhoj',
-    surname: 'Eod',
-    birthday: '11/10/2011',
-    issueDate: '01/02/2012',
-    expiryDate: '11/10/2029',
-    country: 'GBR',
-    photo: '',
-    sex: 'male',
-    passportNumber: 'AB12345678',
-    identificationNumber: '2654321GB',
-    authority: 'qwertyuiop'
-};
+const userData = require('./user.data.js');
 
 chai.use(chaiHttp);
 describe('Users', () => {
@@ -59,9 +16,9 @@ describe('Users', () => {
         });
     });
     let id;
-    describe('/POST user', () => {
-        it('it should POST an user', (done) => {
-            let user = Object.assign({}, userData1);
+    describe('/POST requests', () => {
+        it('it should POST user', (done) => {
+            let user = Object.assign({}, userData[0]);
             chai.request(server)
                 .post('/user')
                 .send(user)
@@ -72,10 +29,20 @@ describe('Users', () => {
                     done();
                 });
         });
+        it('it shouldn\'t POST user (validation error)', (done) => {
+            let user = Object.assign({}, userData[3]);
+            chai.request(server)
+                .post('/user')
+                .send(user)
+                .end((err, res) => {
+                    res.should.have.status(500);
+                    done();
+                });
+        });
     });
     describe('/GET requests', () => {
         it('it should GET all users', (done) => {
-            let user = Object.assign({}, userData2);
+            let user = Object.assign({}, userData[1]);
             chai.request(server)
                 .post('/user')
                 .send(user)
@@ -102,10 +69,18 @@ describe('Users', () => {
                     done();
                 });
         });
+        it('it shouldn\'t GET user by id (id not exist)', (done) => {
+            chai.request(server)
+                .get('/user/' + null)
+                .end((err, res) => {
+                    res.should.have.status(500);
+                    done();
+                });
+        });
     });
 
-    describe('/DELETE user', () => {
-        it('it should DELETE an user by id', (done) => {
+    describe('/DELETE requests', () => {
+        it('it should DELETE user by id', (done) => {
             chai.request(server)
                 .delete('/user/' + id)
                 .end((err, res) => {
@@ -115,11 +90,19 @@ describe('Users', () => {
                     done();
                 });
         });
+        it('it shouldn\'t DELETE user by id (deleted before)', (done) => {
+            chai.request(server)
+                .delete('/user/' + id)
+                .end((err, res) => {
+                    res.should.have.status(500);
+                    done();
+                });
+        });
     });
 
-    describe('/PUT user', () => {
-        it('it should UPDATE an user by id', (done) => {
-            let user = Object.assign({}, userData3);
+    describe('/PUT requests', () => {
+        it('it should UPDATE user by id', (done) => {
+            let user = Object.assign({}, userData[2]);
             let newUserData = {
                 name: "test put"
             };
@@ -138,6 +121,15 @@ describe('Users', () => {
                             res.body.should.be.a('object');
                             res.body.name.should.be.equals('test put');
                         });
+                    done();
+                });
+        });
+        it('it shouldn\'t UPDATE user by id (id not exist)', (done) => {
+            chai.request(server)
+                .put('/user/' + null)
+                .send({})
+                .end((err, res) => {
+                    res.should.have.status(500);
                     done();
                 });
         });
