@@ -38,7 +38,7 @@ router.get('/:surname', (req, res, next) => {
         if (err) { next(err); }
 
         if (!user) {
-          next(new Error(`The passport data with surname \'user.surname\' not exist.`));
+          next(new Error('The passport data with surname \'user.surname\' not exist.'));
         } else {
           const passport = {
             id: user._passport._id,
@@ -47,7 +47,7 @@ router.get('/:surname', (req, res, next) => {
             issueDate: user._passport.issueDate,
             expiryDate: user._passport.expiryDate,
             authority: user._passport.authority
-          }
+          };
 
           res.status(200).json(passport);
         }

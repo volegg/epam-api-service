@@ -19,7 +19,6 @@ describe('PASSPORT API', () => {
         done();
       })
       .catch((err) => {
-        console.log(err);
       });
   });
 
@@ -29,7 +28,6 @@ describe('PASSPORT API', () => {
         done();
       })
       .catch((err) => {
-        console.log(err);
       });
   });
 

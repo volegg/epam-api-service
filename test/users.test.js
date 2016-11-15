@@ -21,11 +21,9 @@ describe('USER API', () => {
             done();
           })
           .catch((err) => {
-            console.log(err);
           });
       })
       .catch((err) => {
-        console.log(err);
       });
 
   });
@@ -38,11 +36,9 @@ describe('USER API', () => {
             done();
           })
           .catch((err) => {
-            console.log(err);
           });
       })
       .catch((err) => {
-        console.log(err);
       });
   });
 

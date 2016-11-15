@@ -8,7 +8,8 @@
   },
   "scripts": {
     "start": "nodemon --watch ./app.js",
-    "test": "mocha test"
+    "test": "mocha test",
+    "lint": "eslint server/ test/"
   },
   "repository": {
     "type": "git",
@@ -30,6 +31,10 @@
     "config": "^1.24.0",
     "cors": "^2.8.1",
     "eslint": "^3.9.1",
+    "eslint-config-airbnb": "^13.0.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^3.0.1",
+    "eslint-plugin-react": "^6.7.1",
     "express": "^4.14.0",
     "mocha": "^3.1.2",
     "moment": "^2.16.0",
