@@ -2,7 +2,7 @@
 const User = require('../models/User.js');
 const Passport = require('../models/Passport.js');
 
-module.exports = function changeUser(req, res) {
+module.exports = function changeUser(req, res, next) {
     User.findByIdAndUpdate(req.params.id, {$set: req.body}, {runValidators: true})
         .then(user => {
             Passport.findByIdAndUpdate(user.passportId, {$set: req.body}, {runValidators: true})
@@ -10,10 +10,10 @@ module.exports = function changeUser(req, res) {
                     res.send(user);
                 })
                 .catch(err => {
-                    res.status(500).send(err);
+                    next(err);
                 });
         })
         .catch(err => {
-            res.status(500).send(err);
+            next(err);
         });
 };

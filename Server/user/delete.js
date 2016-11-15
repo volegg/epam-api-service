@@ -2,18 +2,18 @@
 const User = require('../models/User.js');
 const Passport = require('../models/Passport.js');
 
-module.exports = function deleteUser(req, res) {
+module.exports = function deleteUser(req, res, next) {
     User.findByIdAndRemove(req.params.id)
-        .then((user) => {
+        .then(user => {
             Passport.findByIdAndRemove(user.passportId)
-                .then((passport) => {
+                .then(passport => {
                     res.send(user);
                 })
                 .catch(err => {
-                    res.status(500).send(err);
+                    next(err);
                 });
         })
         .catch(err => {
-            res.status(500).send(err);
+            next(err);
         });
 };
