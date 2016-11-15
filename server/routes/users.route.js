@@ -5,6 +5,8 @@ const moment = require('moment');
 const { DATE_FORMAT } = require('../config');
 const sex = require('../models/types/sex.type.js');
 const countries = require('../constants/countries');
+const { countryValidator, isBirthDayValid } = require('../shared/validators/user.validator');
+const { isIssueDateValid, isExpiryDateValid } = require('../shared/validators/passport.validator');
 
 router.post('/', (req, res, next) => {
   const identificationNumber = req.body.identificationNumber;
@@ -12,6 +14,54 @@ router.post('/', (req, res, next) => {
   passportService.getPassportByidentificationNumber(identificationNumber)
     .then((passport) => {
       if (!passport) {
+        let userErrors = {
+          type: 'ValidationError',
+          message: 'user validation failed',
+          errors: []
+        };
+        let passportErrors = {
+          type: 'ValidationError',
+          message: 'passport validation failed',
+          errors: []
+        };
+
+        if (!countryValidator(req.body.country)) {
+          userErrors.errors.push({
+            path: 'country',
+            message: 'BLR1 is not a valid. The country must be format alpha 3 (BLR|USA) or she is not exist.'
+          });
+        }
+
+        if (isBirthDayValid(req.body.birthday)) {
+          userErrors.errors.push({
+            path: 'birthday',
+            message: `${req.body.birthday} is not a valid.`
+          });
+        }
+
+        if (isExpiryDateValid(req.body.issueDate)) {
+          passportErrors.errors.push({
+            path: 'issueDate',
+            message: `${req.body.issueDate} is not a valid.`
+          });
+        }
+
+        if (isIssueDateValid(req.body.expiryDate)) {
+          passportErrors.errors.push({
+              path: 'expiryDate',
+              message: `${req.body.expiryDate} is not a valid.`
+            });
+        }
+
+        if (passportErrors.errors.length) {
+          next(passportErrors);
+          return;
+        }
+        if (userErrors.errors.length) {
+          next(userErrors);
+          return;
+        }
+
         passportService.insertPassport({
           passportNumber: req.body.passportNumber,
           identificationNumber: req.body.identificationNumber,
@@ -20,10 +70,6 @@ router.post('/', (req, res, next) => {
           authority: req.body.authority
         })
         .then((passport) => {
-          if (countries.indexOf(req.body.country) === -1) {
-            next(new Error(`The countries ${req.body.country} doesn't exists.`));
-          };
-
           userService.insertUser({
             name: req.body.name,
             surname: req.body.surname,
@@ -46,7 +92,7 @@ router.post('/', (req, res, next) => {
 
               res.status(200).json(userResult);
             })
-            .catch((err) => {
+            .catch((err, passport) => {
               next(err);
             });
         })

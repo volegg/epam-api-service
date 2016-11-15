@@ -34,7 +34,7 @@ const userSchema = mongoose.Schema({
     required: true,
     validate: {
       validator: countryValidator,
-      message: '{VALUE} is not a valid. The country must be format alpha 3.'
+      message: '{VALUE} is not a valid. The country must be format alpha 3 (BLR|USA) or she is not exist..'
     }
   },
   _passport: {

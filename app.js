@@ -24,12 +24,22 @@ app.use(cors())
   .use(`/${PREFIX}/users`, users)
   .use(`/${PREFIX}/passports`, passports)
   .use((err, req, res, next) => {
-    res.status(200).json({
-      errors: {
-        name: err.name,
-        message: err.message
-      }
-    });
+    console.log('err',err);
+    let error = {
+      type: err.name,
+      message: err.message,
+      errors: []
+    };
+    for(prop in err.errors) {
+      console.log(prop);
+      error.errors.push({
+        field: err.errors[prop].path,
+        message: err.errors[prop].message
+      });
+    }
+
+    // console.log(error);
+    res.status(200).json(error);
   });
 
 app.listen(PORT, () => {

@@ -1,12 +1,12 @@
 const mongoose = require('mongoose');
-const { passportValid, identificationNumber, authority } = require('../shared/validators/passport.validator');
+const { passportNumberValid, identificationNumberValid, authorityValid } = require('../shared/validators/passport.validator');
 
 const passportSchema = mongoose.Schema({
   passportNumber: {
     type: String,
     required: true,
     validate: {
-      validator: passportValid,
+      validator: passportNumberValid,
       message: '{VALUE} is not a valid. The length 10, 2 upper case letters, 8 digits | AB12345678.'
     }
   },
@@ -14,8 +14,8 @@ const passportSchema = mongoose.Schema({
     type: String,
     required: true,
     validate: {
-      validator: identificationNumber,
-      message: '{VALUE} is not a valid. The length 9.'
+      validator: identificationNumberValid,
+      message: '{VALUE} is not a valid. The length 9, 7 digits, 2 upper case letters | 1234567(PI|GB|BI).'
     }
   },
   issueDate: {
@@ -30,7 +30,7 @@ const passportSchema = mongoose.Schema({
     type: String,
     required: true,
     validate: {
-      validator: authority,
+      validator: authorityValid,
       message: '{VALUE} is not a valid. The length must be less then 100.'
     }
   }
