@@ -194,11 +194,15 @@ router.put('/', (req, res, next) => {
 });
 
 router.delete('/', (req, res, next) => {
+
   userService.deleteUser(req.body)
     .then((user) => {
-      res.status(200).json({
-        message: 'The user deleted successfully'
-      });
+      passportService.deletePassport({id: user._passport})
+        .then(() => {
+          res.status(200).json({
+            message: 'The user deleted successfully'
+          });
+        }).catch(() => {});
     })
     .catch((err) => {
       next(err);
