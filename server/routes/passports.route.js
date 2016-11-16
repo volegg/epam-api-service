@@ -23,6 +23,20 @@ router.post('/', (req, res, next) => {
         });
         return;
       }
+
+      passportService.insertPassport(req.body)
+        .then((passport) => {
+          const passportResult = {
+            id: passport._id,
+            passportNumber: passport.passportNumber,
+            identificationNumber: passport.identificationNumber,
+            issueDate: passport.issueDate,
+            expiryDate: passport.expiryDate,
+            authority: passport.authority
+          }
+
+          res.status(200).json(passportResult);
+        });
     });
 });
 
