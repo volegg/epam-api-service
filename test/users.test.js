@@ -136,7 +136,7 @@ describe('USER API', () => {
      });
  });
 
- it('should update a SINGLE user on /user/<id> PUT', (done) => {
+ it('should update a SINGLE user on /users PUT', (done) => {
    chai.request(app)
      .post('/api/users')
      .send(
