@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const { PORT, PREFIX, DATABASE, DATABASE_TEST } = require('./server/config');
 const { api, users, passports } = require('./server/routes');
+const { isRequestValid } = require('./server/shared/validators/request.validator');
 
 mongoose.Promise = global.Promise;
 
@@ -23,20 +24,12 @@ app.use(cors())
   .use(`/${PREFIX}/users`, users)
   .use(`/${PREFIX}/passports`, passports)
   .use((err, req, res, next) => {
-    let error = {
-      type: err.name,
-      message: err.message,
-      errors: []
-    };
+    let errors = {};
 
-    for(prop in err.errors) {
-      error.errors.push({
-        field: err.errors[prop].path,
-        message: err.errors[prop].message
-      });
-    }
+    errors.type = 'Error';
+    errors.errors = err;
 
-    res.status(200).json(error);
+    res.status(200).json(errors);
   });
 
 app.listen(PORT, () => {

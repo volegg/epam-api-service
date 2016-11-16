@@ -1,3 +1,5 @@
+const { Passport } = require('../../models');
+
 module.exports = {
   passportNumberValid: function(value, maxLength = 10) {
     const isPassportNumberLengthValid = (value.length < maxLength) ? true : false;
@@ -19,12 +21,5 @@ module.exports = {
   },
   isExpiryDateValid: function(date) {
     return new Date(date).toString() === 'Invalid Date';
-  },
-  isPassportValid: function(passport) {
-    const isPassportNumberValid = this.passportNumberValid(passport.passportNumber);
-    const isIdentificationNumberValid = this.identificationNumberValid(passport.identificationNumber);
-    const isAuthorityValid = this.authorityValid(passport.authority);
-
-    return isPassportNumberValid && isIdentificationNumberValid && isAuthorityValid;
   }
 };

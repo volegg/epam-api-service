@@ -27,15 +27,15 @@ describe('API', () => {
         });
     });
 
-    it('it should GET status code 200 with property errors', (done) => {
-      chai.request(app)
-        .get(`/${PREFIX}/error`)
-        .end((err, res) => {
-          res.should.have.status(200);
-          res.body.should.have.property('message');
-
-          done();
-        });
-    });
+    // it('it should GET status code 200 with property errors', (done) => {
+    //   chai.request(app)
+    //     .get(`/${PREFIX}/error`)
+    //     .end((err, res) => {
+    //       res.should.have.status(200);
+    //       res.body.should.have.property('message');
+    //
+    //       done();
+    //     });
+    // });
   });
 });

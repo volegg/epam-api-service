@@ -1,4 +1,7 @@
 const countries = require('../../constants/countries');
+const moment = require('moment');
+const { DATE_FORMAT } = require('../../config');
+const sex = require('../../models/types/sex.type');
 
 module.exports = {
   nameValidator: function(value, maxLength = 30) {
@@ -14,7 +17,11 @@ module.exports = {
     return isCountryExist && isCountryFormatValid;
   },
   isBirthDayValid: function(date) {
-    return new Date(date).toString() === 'Invalid Date';
+      console.log('asdadafsg');
+      return moment(date, DATE_FORMAT, true).isValid();
+  },
+  isBirthDayFormatValid: function(value) {
+    moment(date, DATE_FORMAT, true).isValid()
   },
   isUserValid: function(user) {
     const isNameValid = this.nameValidator(user.name);
@@ -22,5 +29,8 @@ module.exports = {
     const isCountryValid = this.countryValidator(user.country);
 
     return isNameValid && isSurnameValid && isCountryValid;
+  },
+  isSexValid: function(value) {
+    return sex[value];
   }
 };

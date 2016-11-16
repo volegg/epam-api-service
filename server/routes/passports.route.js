@@ -3,30 +3,26 @@ const router = express.Router();
 const { passportService } = require('../services');
 const moment = require('moment');
 const { DATE_FORMAT } = require('../config');
-const { Passport } = require('../models');
+const { isPassportValid, isRequestValid } = require('../shared/validators/request.validator');
 
 router.post('/', (req, res, next) => {
-  passportService.insertPassport({
-      passportNumber: req.body.passportNumber,
-      identificationNumber: req.body.identificationNumber,
-      issueDate: moment(req.body.issueDate, DATE_FORMAT, true).unix(),
-      expiryDate: moment(req.body.expiryDate, DATE_FORMAT, true).unix(),
-      authority: req.body.authority
-    })
-    .then((passport) => {
-      const passportResult = {
-        id: passport._id,
-        passportNumber: passport.passportNumber,
-        identificationNumber: passport.identificationNumber,
-        issueDate: passport.issueDate,
-        expiryDate: passport.expiryDate,
-        authority: passport.authority
-      };
+  const { errors, isValid } = isPassportValid(req.body);
 
-      res.status(200).json(passportResult);
-    })
-    .catch((err) => {
-      next(err);
+  if (!isValid) {
+    next(errors);
+    return;
+  }
+
+  passportService.getPassportByidentificationNumber(req.body.identificationNumber)
+    .then((passport) => {
+      if (passport) {
+        next({
+          errors: {
+            message: `The passport with id \'${req.body.identificationNumber}\' already exist.`
+          }
+        });
+        return;
+      }
     });
 });
 
@@ -81,12 +77,19 @@ router.get('/', (req, res, next) => {
 });
 
 router.put('/', (req, res, next) => {
-  passportService.updatePassport(req.body.id)
+  const { errors, isValid } = isPassportValid(req.body);
+
+  if (!isValid) {
+    next(errors);
+    return;
+  }
+
+  passportService.getPassportById(req.body.id)
     .then((passport) => {
       passport.passportNumber = req.body.passportNumber;
       passport.identificationNumber = req.body.identificationNumber;
-      passport.issueDate = moment(req.body.issueDate, DATE_FORMAT, true).unix();
-      passport.expiryDate = moment(req.body.expiryDate, DATE_FORMAT, true).unix();
+      passport.issueDate = req.body.issueDate;
+      passport.expiryDate = req.body.expiryDate;
       passport.authority = req.body.authority;
 
       passport.save()
@@ -102,16 +105,24 @@ router.put('/', (req, res, next) => {
 
           res.status(200).json(passportResult);
         })
-        .catch((err) => {
-          next(err);
-        });
     })
     .catch((err) => {
-      next(err);
+      next({
+        errors: {
+          message: `The passport with id \'${req.body.id}\' doesn't exist.`
+        }
+      });
     });
 });
 
 router.delete('/', (req, res, next) => {
+  const { errors, isValid } = isPassportValid(req.body);
+
+  if (!isValid) {
+    next(errors);
+    return;
+  }
+
   passportService.deletePassport(req.body)
     .then((passport) => {
       res.status(200).json({
@@ -119,7 +130,11 @@ router.delete('/', (req, res, next) => {
       });
     })
     .catch((err) => {
-      next(err);
+      next({
+        errors: {
+          message: `The passport with id \'${req.body.id}\' doesn't exist.`
+        }
+      });
     });
 });
 

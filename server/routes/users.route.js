@@ -7,78 +7,34 @@ const sex = require('../models/types/sex.type.js');
 const countries = require('../constants/countries');
 const { countryValidator, isBirthDayValid } = require('../shared/validators/user.validator');
 const { isIssueDateValid, isExpiryDateValid } = require('../shared/validators/passport.validator');
+const { isUserValid } =  require('../shared/validators/request.validator');
+
+const { User } = require('../models');
 
 router.post('/', (req, res, next) => {
-  const identificationNumber = req.body.identificationNumber;
+  const { errors, isValid } = isUserValid(req.body);
 
-  passportService.getPassportByidentificationNumber(identificationNumber)
+  if (!isValid) {
+    next(errors);
+    return;
+  }
+
+  passportService.getPassportByidentificationNumber(req.body.identificationNumber)
     .then((passport) => {
-      if (!passport) {
-        let userErrors = {
-          type: 'ValidationError',
-          message: 'user validation failed',
-          errors: []
-        };
-        let passportErrors = {
-          type: 'ValidationError',
-          message: 'passport validation failed',
-          errors: []
-        };
+      if (passport) {
+        next({
+          errors: {
+            passport: `The user with passport's identification number ${req.body.identificationNumber} already exist.`
+          }
+        });
+        return;
+      }
 
-        if (!countryValidator(req.body.country)) {
-          userErrors.errors.push({
-            path: 'country',
-            message: 'BLR1 is not a valid. The country must be format alpha 3 (BLR|USA) or she is not exist.'
-          });
-        }
-
-        if (isBirthDayValid(req.body.birthday)) {
-          userErrors.errors.push({
-            path: 'birthday',
-            message: `${req.body.birthday} is not a valid.`
-          });
-        }
-
-        if (isExpiryDateValid(req.body.issueDate)) {
-          passportErrors.errors.push({
-            path: 'issueDate',
-            message: `${req.body.issueDate} is not a valid.`
-          });
-        }
-
-        if (isIssueDateValid(req.body.expiryDate)) {
-          passportErrors.errors.push({
-              path: 'expiryDate',
-              message: `${req.body.expiryDate} is not a valid.`
-            });
-        }
-
-        if (passportErrors.errors.length) {
-          next(passportErrors);
-          return;
-        }
-        if (userErrors.errors.length) {
-          next(userErrors);
-          return;
-        }
-
-        passportService.insertPassport({
-          passportNumber: req.body.passportNumber,
-          identificationNumber: req.body.identificationNumber,
-          issueDate: moment(req.body.issueDate, DATE_FORMAT, true).unix(),
-          expiryDate: moment(req.body.expiryDate, DATE_FORMAT, true).unix(),
-          authority: req.body.authority
-        })
+      passportService.insertPassport(req.body)
         .then((passport) => {
-          userService.insertUser({
-            name: req.body.name,
-            surname: req.body.surname,
-            birthday: moment(req.body.birthday, DATE_FORMAT, true).unix(),
-            sex: sex[req.body.sex],
-            photo: req.body.photo,
-            country: req.body.country,
-            _passport: passport._id
-          })
+          req.body._passport = passport._id;
+
+          userService.insertUser(req.body)
             .then((user) => {
               const userResult = {
                 id: user._id,
@@ -91,21 +47,9 @@ router.post('/', (req, res, next) => {
               };
 
               res.status(200).json(userResult);
-            })
-            .catch((err, passport) => {
-              next(err);
             });
-        })
-        .catch((err) => {
-          next(err);
         });
-      } else {
-        next(new Error('The user with this identification number already exist.'));
-      }
     })
-    .catch((err) => {
-      next(err);
-    });
 });
 
 router.get('/:id', (req, res, next) => {
@@ -161,12 +105,19 @@ router.get('/', (req, res, next) => {
 });
 
 router.put('/', (req, res, next) => {
+  const { errors, isValid } = isUserValid(req.body);
+
+  if (!isValid) {
+    next(errors);
+    return;
+  }
+
   userService.updateUser(req.body.id)
     .then((user) => {
       user.name = req.body.name;
       user.surname = req.body.surname;
-      user.birthday = moment(req.body.birthday, DATE_FORMAT, true).unix();
-      user.sex = sex[req.body.sex];
+      user.birthday = req.body.birthday;
+      user.sex = req.body.sex;
       user.photo = req.body.photo;
       user.country = req.body.country;
 
@@ -183,17 +134,24 @@ router.put('/', (req, res, next) => {
           };
 
           res.status(200).json(userResult);
-        })
-        .catch((err) => {
-          next(err);
         });
     })
     .catch((err) => {
-      next(err);
+      next({
+        errors: {
+          message: `The user with id \'${req.body.id}\' doesn't exist.`
+        }
+      });
     });
 });
 
 router.delete('/', (req, res, next) => {
+  const { errors, isValid } = isUserValid(req.body);
+
+  if (!isValid) {
+    next(errors);
+    return;
+  }
 
   userService.deleteUser(req.body)
     .then((user) => {
@@ -205,7 +163,11 @@ router.delete('/', (req, res, next) => {
         }).catch(() => {});
     })
     .catch((err) => {
-      next(err);
+      next({
+        errors: {
+          message: `The user with id \'${req.body.id}\' doesn't exist.`
+        }
+      });
     });
 });
 

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { nameValidator, surnameValidator, countryValidator } = require('../shared/validators/user.validator');
+const { nameValidator, surnameValidator, countryValidator, isBirthDayFormatValid } = require('../shared/validators/user.validator');
 
 const userSchema = mongoose.Schema({
   name: {
@@ -39,7 +39,7 @@ const userSchema = mongoose.Schema({
   },
   _passport: {
     type: mongoose.Schema.ObjectId,
-    required: true,
+    // required: true,
     ref: 'passport'
   }
 });

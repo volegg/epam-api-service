@@ -18,5 +18,8 @@ module.exports = {
   },
   deletePassport: function(passport) {
     return Passport.findOneAndRemove({_id: passport.id});
+  },
+  getPassportById: function(passportId) {
+    return Passport.findById(passportId);
   }
 };
