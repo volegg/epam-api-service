@@ -11,8 +11,6 @@ const { isRequestValid } = require('./server/shared/validators/request.validator
 mongoose.Promise = global.Promise;
 
 if (process.env.NODE_ENV === 'test') {
-  app.use(morgan('dev'));
-  
   mongoose.connect(DATABASE_TEST);
 } else {
   app.use(morgan('dev'));

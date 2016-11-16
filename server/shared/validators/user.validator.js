@@ -17,7 +17,6 @@ module.exports = {
     return isCountryExist && isCountryFormatValid;
   },
   isBirthDayValid: function(date) {
-      console.log('asdadafsg');
       return moment(date, DATE_FORMAT, true).isValid();
   },
   isBirthDayFormatValid: function(value) {

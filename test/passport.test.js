@@ -8,7 +8,6 @@ const moment = require('moment');
 const { PREFIX } = require('../server/config');
 const { Passport } = require('../server/models');
 const { DATE_FORMAT } = require('../server/config');
-const { passportsMock } = require('./mocks');
 
 chai.use(chaiHttp);
 
@@ -21,160 +20,132 @@ describe('PASSPORT API', () => {
       .catch((err) => {
       });
   });
-  //
-  // afterEach((done) => {
-  //   Passport.remove({})
-  //     .then((data) => {
-  //       done();
-  //     })
-  //     .catch((err) => {
-  //     });
-  // });
 
-  describe('POST api/passports', () => {
-    it('send passsport\'s array to the server', (done) => {
-      const passports = passportsMock;
-      const passport = {
-        passportNumber: 'AB1234567',
-        identificationNumber: '2123456GB',
-        issueDate: '01/01/2000',
-        expiryDate: '01/01/2010',
-        authority: 'some text'
-      };
-      chai.request(app)
-        .post('/api/passports')
-        .send(passport)
-        .end((err, res) => {
-          console.log('asd');
-          console.log(res.body);
-          done();
-        });
-      // done();
-
-      // chai.request(app).get(`/${PREFIX}/passports`).end((err, res) => {
-      //   console.log(res);
-      // })
-      // done();
-      // console.log(passportsMock);
-    });
+  afterEach((done) => {
+    Passport.remove({})
+      .then((data) => {
+        done();
+      })
+      .catch((err) => {
+      });
   });
-  // describe('GET /passports', () => {
-  //   it('it should GET status code 200', (done) => {
-  //     chai.request(app)
-  //       .get(`/${PREFIX}/passports`)
-  //       .end((err, res) => {
-  //         res.should.have.status(200);
-  //
-  //         done();
-  //       });
-  //   });
-  //
-  //   it('it should GET a array', (done) => {
-  //     chai.request(app)
-  //       .get(`/${PREFIX}/passports`)
-  //       .end((err, res) => {
-  //         res.should.have.status(200);
-  //         res.body.should.be.a('array');
-  //
-  //         done();
-  //       });
-  //   });
-  // });
-  //
-  // describe('POST /passports', () => {
-  //   it('it should POST a user', (done) => {
-  //     const passport = Object.assign({}, passportsMock[0]);
-  //
-  //     chai.request(app)
-  //       .post(`/${PREFIX}/passports`)
-  //       .send(passport)
-  //       .end((err, res) => {
-  //         res.should.have.status(200);
-  //         res.body.should.be.a('object');
-  //         res.body.should.have.property('issueDate');
-  //         res.body.should.have.property('expiryDate');
-  //         res.body.should.have.property('passportNumber');
-  //         res.body.should.have.property('identificationNumber');
-  //         res.body.should.have.property('authority');
-  //
-  //         done();
-  //       });
-  //   });
-  // });
-  //
-  // describe('PUT /passports', () => {
-  //   it('it should update user', (done) => {
-  //     const passport = Object.assign({}, passportsMock[0]);
-  //     const issueDate = moment(passport.issueDate, DATE_FORMAT, true).unix();
-  //     const expiryDate = moment(passport.expiryDate, DATE_FORMAT, true).unix();
-  //
-  //     chai.request(app)
-  //       .post(`/${PREFIX}/passports`)
-  //       .send(passport)
-  //       .end((err, res) => {
-  //         res.should.have.status(200);
-  //         res.body.issueDate.should.be.a('number');
-  //         res.body.issueDate.should.equal(issueDate);
-  //         res.body.expiryDate.should.be.a('number');
-  //         res.body.expiryDate.should.equal(expiryDate);
-  //         res.body.passportNumber.should.equal('AB1111111');
-  //         res.body.identificationNumber.should.equal('2020286BI');
-  //         res.body.authority.should.be.a('string');
-  //
-  //         passport.id = res.body.id;
-  //         passport.passportNumber = 'AB1111112';
-  //
-  //         chai.request(app)
-  //           .put(`/${PREFIX}/passports`)
-  //           .send(passport)
-  //           .end((err, response) => {
-  //             response.should.have.status(200);
-  //             response.body.issueDate.should.be.a('number');
-  //             response.body.issueDate.should.equal(issueDate);
-  //             response.body.expiryDate.should.be.a('number');
-  //             response.body.expiryDate.should.equal(expiryDate);
-  //             response.body.passportNumber.should.equal('AB1111112');
-  //             response.body.identificationNumber.should.equal('2020286BI');
-  //             response.body.authority.should.be.a('string');
-  //
-  //             done();
-  //           });
-  //       });
-  //
-  //   });
-  // });
-  //
-  // describe('DELETE /passport', () => {
-  //   it('it should delete passport', (done) => {
-  //     const passport = Object.assign({}, passportsMock[0]);
-  //     const issueDate = moment(passport.issueDate, DATE_FORMAT, true).unix();
-  //     const expiryDate = moment(passport.expiryDate, DATE_FORMAT, true).unix();
-  //
-  //     chai.request(app)
-  //       .post(`/${PREFIX}/passports`)
-  //       .send(passport)
-  //       .end((err, res) => {
-  //         res.should.have.status(200);
-  //         res.body.issueDate.should.be.a('number');
-  //         res.body.issueDate.should.equal(issueDate);
-  //         res.body.expiryDate.should.be.a('number');
-  //         res.body.expiryDate.should.equal(expiryDate);
-  //         res.body.passportNumber.should.equal('AB1111111');
-  //         res.body.identificationNumber.should.equal('2020286BI');
-  //         res.body.authority.should.be.a('string');
-  //
-  //         passport.id = res.body.id;
-  //
-  //         chai.request(app)
-  //           .delete(`/${PREFIX}/passports`)
-  //           .send(passport)
-  //           .end((err, response) => {
-  //             response.should.have.status(200);
-  //             response.body.should.have.property('message');
-  //
-  //             done();
-  //           });
-  //       });
-  //   });
-  // });
+
+  it('should list ALL passports on api/passports GET', (done) => {
+    chai.request(app)
+      .get('/api/passports')
+      .end(function(err, res) {
+        res.should.have.status(200);
+        res.should.be.json;
+        res.body.should.be.a('array');
+        done();
+      });
+  });
+
+  it('should add a SINGLE passport on api/passports POST', (done) => {
+    chai.request(app)
+      .post('/api/passports')
+      .send(
+        {
+          passportNumber: 'BA0234567',
+          identificationNumber: '2020281GB',
+          issueDate: '01/01/2015',
+          expiryDate: '01/01/2016',
+          authority: 'some text'
+        }
+      )
+      .end(function(err, res) {
+        res.should.have.status(200);
+        res.should.be.json;
+        res.body.should.be.a('object');
+        res.body.should.have.property('id');
+        res.body.should.have.property('passportNumber');
+        res.body.should.have.property('identificationNumber');
+        res.body.should.have.property('issueDate');
+        res.body.should.have.property('expiryDate');
+        res.body.should.have.property('authority');
+        done();
+      });
+  });
+
+  it('should update a SINGLE passport on api/passports PUT', (done) => {
+    chai.request(app)
+      .post('/api/passports')
+      .send(
+        {
+          passportNumber: 'BA0234567',
+          identificationNumber: '2020281GB',
+          issueDate: '01/01/2015',
+          expiryDate: '01/01/2016',
+          authority: 'some text'
+        }
+      )
+      .end(function(err, res) {
+        res.should.have.status(200);
+        res.should.be.json;
+        res.body.should.be.a('object');
+        res.body.should.have.property('id');
+        res.body.should.have.property('passportNumber');
+        res.body.should.have.property('identificationNumber');
+        res.body.should.have.property('issueDate');
+        res.body.should.have.property('expiryDate');
+        res.body.should.have.property('authority');
+
+        res.body.passportNumber = 'AB0234567';
+
+        chai.request(app)
+          .put('/api/passports')
+          .send(res.body)
+          .end((err, passport) => {
+            res.should.have.status(200);
+            res.should.be.json;
+            res.body.should.be.a('object');
+            res.body.should.have.property('id');
+            res.body.should.have.property('passportNumber');
+            res.body.passportNumber.should.be.equal('AB0234567');
+            res.body.should.have.property('identificationNumber');
+            res.body.should.have.property('issueDate');
+            res.body.should.have.property('expiryDate');
+            res.body.should.have.property('authority');
+            done();
+          })
+      });
+  });
+
+  it('should delete a SINGLE passport on api/passports DELETE', (done) => {
+    const server = chai.request(app);
+    server
+      .post('/api/passports')
+      .send(
+        {
+          passportNumber: 'BA0234567',
+          identificationNumber: '2020281GB',
+          issueDate: '01/01/2015',
+          expiryDate: '01/01/2016',
+          authority: 'some text'
+        }
+      )
+      .end(function(err, res) {
+        res.should.have.status(200);
+        res.should.be.json;
+        res.body.should.be.a('object');
+        res.body.should.have.property('id');
+        res.body.should.have.property('passportNumber');
+        res.body.should.have.property('identificationNumber');
+        res.body.should.have.property('issueDate');
+        res.body.should.have.property('expiryDate');
+        res.body.should.have.property('authority');
+
+        server
+          .delete('/api/passports')
+          .send(res.body)
+          .end((err, res) => {
+            res.should.have.status(200);
+            res.should.be.json;
+            res.body.should.be.a('object');
+            res.body.should.have.property('message');
+
+            done();
+          });
+      });
+  });
 });
