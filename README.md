@@ -14,12 +14,12 @@
 
 
 #Before start work
-
-> npm install 
-> npm install -g express mocha
-> npm test 
-> npm start
-
+```
+ npm install
+ npm install -g express mocha
+ npm test
+ npm start
+```
 Do commits. Implement one of logic part and do commit to see working process and understand flow.
 
 ##API
@@ -28,5 +28,5 @@ We should have route and CRUD operations for working with client information:
   - add/remove/edit client information (personal info, passport data)
   - provide users without passport data
   - provide passport data by client name
-  
+
 Use JSON for response and POST request.  

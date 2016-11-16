@@ -7,7 +7,7 @@
     "node": ">=6.0.0"
   },
   "scripts": {
-    "start": "nodemon --watch ./app.js",
+    "start": "nodemon cluster.js",
     "test": "mocha test",
     "lint": "eslint server/ test/"
   },
@@ -28,6 +28,7 @@
     "body-parser": "^1.15.2",
     "chai": "^3.5.0",
     "chai-http": "^3.0.0",
+    "cluster": "^0.7.7",
     "config": "^1.24.0",
     "cors": "^2.8.1",
     "eslint": "^3.9.1",
@@ -40,6 +41,7 @@
     "moment": "^2.16.0",
     "mongoose": "^4.6.7",
     "morgan": "^1.7.0",
-    "nodemon": "^1.11.0"
+    "nodemon": "^1.11.0",
+    "os": "^0.1.1"
   }
 }
